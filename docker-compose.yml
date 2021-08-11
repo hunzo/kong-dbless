@@ -2,6 +2,7 @@ version: '3.7'
 services: 
   kong:
     image: kong:${TAG-latest}
+    container_name: kong-dbless
     env_file: 
       - kong.env
     volumes: 
@@ -13,6 +14,11 @@ services:
       - 127.0.0.1:8444:8444
       - 8000:8000
       - 8443:8443
+    healthcheck:
+      test: ["CMD", "kong", "health"]
+      interval: 5s
+      timeout: 2s
+      retries: 15
 
 networks: 
   kong-net:
